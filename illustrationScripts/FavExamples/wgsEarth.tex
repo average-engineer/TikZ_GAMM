@@ -1,0 +1,76 @@
+\tdplotsetmaincoords{70}{120}
+\pgfplotsset{compat=newest}
+
+\begin{tikzpicture}[tdplot_main_coords, scale = 2.5]
+	% Origin
+	\coordinate (O) at (0,0,0);
+	
+	% Create a point (P)
+	\coordinate (P) at (6,6,6);
+	%\node[color = red,xshift = 0.5cm](Pn) at (P) {P};
+	\filldraw[red] (P) circle (0.5pt) node[anchor=west]{P};
+	
+	% Define the ellipsoid parameters
+	\def\rx{3cm} % x-radius
+	\def\ry{2cm} % y-radius
+	
+	% Draw shaded circle
+	\shade[ball color = lightgray,opacity = 0.25] (0,0,0) ellipse ({\rx} and {\ry});
+	
+	
+	% Equitortial Plane
+	\tdplotsetrotatedcoords{0}{0}{0}
+	\tdplotdrawarc[tdplot_rotated_coords,dashed,black, fill = gray!60]{(0,0,0)}{3}{0}{360}{};
+	\coordinate (R) at ($(0,0)+(0:{\rx} and {\ry})$);
+	\draw[thick] (O) -- (R);
+	\node[xshift = 2cm] at ($(0,0,0)+(170:{\rx} and {\ry})$) {\small\begin{tabular}{c}
+			\textbf{Equitorial}\\\textbf{Plane}
+	\end{tabular}};
+	
+	% Earth Frame
+	\tdplotsetrotatedcoords{0}{0}{0}
+	\draw[thick,tdplot_rotated_coords,->] (0,0,0) --
+	(3.5,0,0) node[anchor=north]{$x_E$};
+	\draw[thick,tdplot_rotated_coords,->] (0,0,0) --
+	(0,3.5,0) node[anchor=west]{$y_E$};
+	\draw[thick,tdplot_rotated_coords,->] (0,0,0) --
+	(0,0,3) node[anchor=south]{$z_E$};
+	
+	% Reference Meridian
+	\def\rxm{1.7cm} % x-radius
+	\def\rym{2cm} % y-radius
+	\draw[thick,dashed,color=red] (0,0,0) ellipse ({\rxm} and {\rym});
+	\node[xshift = -1cm,color=red] at ($(0,0,0)+(135:{\rxm} and {\rym})$) {\small\begin{tabular}{c}
+			\textbf{Reference}\\\textbf{Meridian}
+	\end{tabular}};
+
+	% Drawing the geodetic coordinates
+	\draw[thick,color=red,dotted](O)--(P);
+	\coordinate (Q) at ($(0,0)+(0:1cm and 1cm)$);
+	% Longitude
+	\coordinate (long) at ($(0,0)+(-150:0.5cm and 0.5cm)$);
+	%\draw(long)--(Q);
+	%\draw [<->] (O) ++(-150:0.5) arc (0:1);
+	\draw[->,thick] (long) .. controls +(0.1,0.1) and +(,0.1) .. (Q) node[midway, below] {$\lambda$};
+	% Lattitude
+	\coordinate (A) at (1,1,1);
+	\coordinate (lat1) at ($(0,0)+(0:0.6cm and 0.6cm)$);
+	%\draw(lat1)--(A);
+	\draw[->,thick] (lat1) .. controls +(0,0) and +(-0.25,0.25) .. (A) node[midway, left] {$\varphi^{'}$};
+	\coordinate (lat2) at ($(0,0)+(0:1.6cm and 1.6cm)$);
+	\coordinate (B) at ($(Q)+(69:0.6cm and 0.6cm)$);
+	\draw[->,thick] (lat2) .. controls +(0,0) and +(-0.25,0.3) .. (B) node[midway, left] {$\varphi$};
+	% Height
+	\coordinate (C) at ($(Q)+(67:1.75cm and 1.75cm)$);
+	%\node[xshift = 0.5cm,color=red] at (C) {C};
+	\filldraw[red] (C) circle (0.5pt) node[anchor=west]{};
+	\draw[thick,<->](P)--node[right]{$h$}(C);
+	\draw[thick,color=blue,dotted](Q)--(C) node[xshift = 0.5cm,yshift = -1cm]{\small\begin{tabular}{c}
+			\textbf{Local}\\\textbf{Vertical}
+	\end{tabular}};
+	
+	
+	
+	
+	
+\end{tikzpicture}
