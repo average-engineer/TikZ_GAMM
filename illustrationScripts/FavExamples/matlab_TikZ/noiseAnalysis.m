@@ -2,7 +2,7 @@
 clc
 close all
 clearvars
-addpath("C:\Users\ashut\Desktop\Werk\TikZ_GAMM\illustrationScripts\matlabtikz");
+addpath("C:\Users\Ashutosh Mukherjee\Desktop\Privat\TikZ_GAMM\illustrationScripts\matlabtikz");
 %% Loading sensor data
 % file = 'cubeOrange_IMU_100Hz.mat';
 file = 'adis16467.mat';
