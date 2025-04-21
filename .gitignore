@@ -1,3 +1,4 @@
 # Temporary Files
 ~$*.doc*
 ~$*.ppt*
+*.tmp

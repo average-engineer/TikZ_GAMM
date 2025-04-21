@@ -1,5 +1,5 @@
 \centering
-\tdplotsetmaincoords{60}{115}
+\tdplotsetmaincoords{60}{115} % controls the orientation of the main coordinate system (Inertial Frame)
 \pgfplotsset{compat=newest}
 \begin{tikzpicture}[tdplot_main_coords, scale = 2.5]
 	
@@ -34,22 +34,15 @@
 	\tdplotdrawarc[tdplot_rotated_coords,dashed,black]{(0,0,0)}{2.85}{62}{180}{};
 	
 	
-	%\tdplotsetrotatedcoords{0}{90}{0};
-	%\draw[dashed,tdplot_rotated_coords,gray] (-2.3,0,0) arc (40:0:2);
-	
-	%\tdplotsetrotatedcoords{0}{90}{90};
-	%\draw[dashed,tdplot_rotated_coords,gray] (2,0,0) arc (0:180:2);
-	
-	
-	% Inertial Frame
+	% Inertial Frame {x_I,y_I,z_I}
 	\draw[thick,->] (0,0,0) -- (3.5,0,0) node[anchor=north]{$x_I$};
 	\draw[thick,->] (0,0,0) -- (0,3.5,0) node[anchor=north]{$y_I$};
 	\draw[thick,->] (0,0,0) -- (0,0,3.5);
 	\draw[dashed, gray] (0,0,0) -- (-1,0,0);
 	\draw[dashed, gray] (0,0,0) -- (0,-1,0);
 	
-	% Earth Frame
-	\tdplotsetrotatedcoords{20}{0}{0}
+	% Earth Frame {x_E,y_E,z_E}
+	\tdplotsetrotatedcoords{20}{0}{0} % Orientation of the Earth Frame wrt Main Coordinate System (Inertial Frame)
 	\draw[thick,tdplot_rotated_coords,->] (0,0,0) --
 	(3.5,0,0) node[anchor=north]{$x_E$};
 	\draw[thick,tdplot_rotated_coords,->] (0,0,0) --
@@ -60,36 +53,15 @@
 	% Draw the rotation arc
 	\tdplotdrawarc[tdplot_main_coords,->,black]{(0,0,3)}{0.5}{-60}{180}{anchor= north west}{$\Omega$};
 	
-	% Drone
-	\tdplotsetrotatedcoords{100}{45}{40}
-	\tdplotsetrotatedcoordsorigin{(P)}
+	% Quadcopter (Import another TikZ graphic)
+	% The Body coordinate system {x_B,y_B,z_B} directly comes from the other TikZ file
+	\tdplotsetrotatedcoords{100}{45}{40} % This defines the rotation of the quadcopter wrt the main coordinate system
+	\tdplotsetrotatedcoordsorigin{(P)} % P is the origin of the rotated coordinate system
 	\node[tdplot_rotated_coords]{
-		\tikzstyle{qcenter}     = [draw, rectangle, minimum height=0.5cm, minimum width=0.5cm, fill = black]
-		\tikzstyle{prop}    = [circle, inner sep=0pt, minimum size=1cm, draw=black, fill=red]
-		\begin{tikzpicture}
-			\node[qcenter] (center) at (P) {};
-			% Propeller Centers
-			\coordinate (p1C) at ($(center) + (1,1,0)$);
-			\coordinate (p2C) at ($(center) + (-1,-1,0)$);
-			\coordinate (p3C) at ($(center) + (-1,1,0)$);
-			\coordinate (p4C) at ($(center) + (1,-1,0)$);
-			% Propeller Frames
-			\node[prop] (p1) at (p1C) {};
-			\node[prop] (p2) at (p2C) {};
-			\node[prop] (p3) at (p3C) {};
-			\node[prop] (p4) at (p4C) {};
-			
-			% Drone Frame
-			\draw[thick] (p1C) -- (p2C);
-			\draw[thick] (p3C) -- (p4C);
-			
-			% Body-Fixed Coordinate System
-			\draw[->,color = red,thick] (center) -- ($(center) + (3,0,0)$) node[right] {$x_B$};
-			\draw[->,color = red,thick] (center) -- ($(center) + (0,3,0)$) node[above] {$y_B$};
-			\draw[->,color = red,thick] (center) -- ($(center) + (0.25,1,1)$) node[right] {$z_B$};
-	\end{tikzpicture}};
+		\input{quadCopter}}; % Refer to quadCopter.tex to refer to how the quadcopter has been drawn
 	
-	% Local Navigation Frame
+	% Local Navigation Frame {x_N,y_N,z_N}
+	% There is probably a better way of drawing this frame using the tikz-3dplot package, at the time of making this figure, pressure of submission dictated terms unfortunately
 	\draw[->,thick] ($(P) + (-0.25,-0.25,-0.25)$)--($(O) - (-1,-1,-1)$) node[below]{$z_N$};
 	\draw[->,thick] ($(P) + (-0.25,-0.25,-0.25)$)--($(O) + (0,1,2.25)$) node[above]{$x_N$};
 	\draw[->,thick] ($(P) + (-0.25,-0.25,-0.25)$)--($(O) + (0,2,2.25)$) node[above]{$y_N$};

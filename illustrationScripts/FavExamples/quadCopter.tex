@@ -1,0 +1,25 @@
+\tikzstyle{qcenter}     = [draw, rectangle, minimum height=0.5cm, minimum width=0.5cm, fill = black] % Drone Frame Center
+\tikzstyle{prop}    = [circle, inner sep=0pt, minimum size=1cm, draw=black, fill=red] % Propellers
+% P -> origin of the quadcopter (ensure P is defined in the parent code)
+\begin{tikzpicture}
+	\node[qcenter] (center) at (P) {};
+	% Propeller Centers
+	\coordinate (p1C) at ($(center) + (1,1,0)$);
+	\coordinate (p2C) at ($(center) + (-1,-1,0)$);
+	\coordinate (p3C) at ($(center) + (-1,1,0)$);
+	\coordinate (p4C) at ($(center) + (1,-1,0)$);
+	% Propeller Frames
+	\node[prop] (p1) at (p1C) {};
+	\node[prop] (p2) at (p2C) {};
+	\node[prop] (p3) at (p3C) {};
+	\node[prop] (p4) at (p4C) {};
+	
+	% Drone Frame
+	\draw[thick] (p1C) -- (p2C);
+	\draw[thick] (p3C) -- (p4C);
+	
+	% Body-Fixed Coordinate System
+	\draw[->,color = red,thick] (center) -- ($(center) + (3,0,0)$) node[right] {$x_B$};
+	\draw[->,color = red,thick] (center) -- ($(center) + (0,3,0)$) node[above] {$y_B$};
+	\draw[->,color = red,thick] (center) -- ($(center) + (0.25,1,1)$) node[right] {$z_B$};
+\end{tikzpicture}
