@@ -1,0 +1,142 @@
+\begin{tikzpicture}[
+	>=Stealth,
+	pulley/.style={circle, draw, very thick, minimum size=3cm},
+	angleCircle/.style={circle, draw = white, thick, minimum size=1.75cm},
+	fixCircle/.style={circle, draw, thick, minimum size=0.2cm, fill = white},
+	fixTriangle/.style={isosceles triangle, isosceles triangle apex angle=60, draw, thick, fill = white, minimum size = 0.1cm},
+	mass/.style={rectangle, draw, very thick, minimum width=1cm, minimum height=1cm},
+	force/.style={->, thick},
+	angle/.style={draw, ->, angle eccentricity=1.3, angle radius=1cm}
+	]
+	
+	% Rollen
+	\coordinate (a) at (0,0);
+	\coordinate (c) at (9,0);
+	\coordinate (b) at (4,-5);
+	\node[pulley] (A) at (a) {};
+	\node[pulley] (C) at (c) {};
+	\node[pulley] (B) at (b) {};
+	
+	
+	% Umschlingungswinkeln
+	% A
+	\node[angleCircle] (aa) at (0,0) {};
+	\coordinate (a1) at (A.180);
+	\coordinate (a2) at (A.20);
+	\draw[dashed] (A.center) -- (a1);
+	\draw[dashed] (A.center) -- (a2);
+	\coordinate (aa1) at (aa.180);
+	\coordinate (aa2) at (aa.20);
+	\draw[<->,bend left = 50] (aa1) to node[midway,above]{$\alpha_{A}$}(aa2);
+	% B
+	\node[angleCircle] (bb) at (b) {};
+	\coordinate (b1) at (B.-30);
+	\coordinate (b2) at (B.190);
+	\draw[dashed] (B.center) -- (b1);
+	\draw[dashed] (B.center) -- (b2);
+	\coordinate (bb1) at (bb.-30);
+	\coordinate (bb2) at (bb.190);
+	\draw[<->,bend left = 50] (bb1) to node[midway,below]{$\alpha_{B}$}(bb2);
+	
+	% C
+	\node[angleCircle] (cc) at (c) {};
+	\coordinate (c1) at (C.150);
+	\coordinate (c2) at (C.0);
+	\draw[dashed] (C.center) -- (c1);
+	\draw[dashed] (C.center) -- (c2);
+	\coordinate (cc1) at (cc.150);
+	\coordinate (cc2) at (cc.0);
+	\draw[<->,bend left = 50] (cc1) to node[midway,above]{$\alpha_{C}$}(cc2);
+	
+	% Radii
+	\draw[->] (A.center) -- node[midway, below] {$r_A$} (A.200);
+	\draw[->] (B.center) -- node[midway, above] {$r_B$} (B.5);
+	\draw[->] (C.center) -- node[midway, below] {$r_C$} (C.180);
+	
+	% Rollen Fix Punkte
+	% A
+	\node[fixTriangle, rotate = 90, anchor = east] (fa1) at (a){};
+	\node[fixCircle] (fa2) at (a) {};
+	\draw[ultra thick] ($(fa1.left corner) + (-0.1,0)$) -- ($(fa1.right corner) + (0.1,0)$);
+	\foreach \x in {0, 0.2, 0.4, 0.6, 0.8} {
+		\draw[thick] ($(fa1.left corner) + (-0.1,0) + (\x,0)$) -- ($(fa1.left corner) + (-0.1,0) + (\x + 0.15,-0.15)$);
+	}
+	
+	% B
+	\node[fixTriangle, rotate = -90, anchor = east] (fb1) at (b){};
+	\node[fixCircle] (fb2) at (b) {};
+	\draw[ultra thick] ($(fb1.left corner) + (0.1,0)$) -- ($(fb1.right corner) + (-0.1,0)$);
+	\foreach \x in {0, 0.2, 0.4, 0.6, 0.8} {
+		\draw[thick] ($(fb1.right corner) + (-0.1,0) + (\x,0)$) -- ($(fb1.right corner) + (-0.1,0) + (\x + 0.15,0.15)$);
+	}
+	
+	% C
+	\node[fixTriangle, rotate = 90, anchor = east] (fc1) at (c){};
+	\node[fixCircle] (fc2) at (c) {};
+	\draw[ultra thick] ($(fc1.left corner) + (-0.1,0)$) -- ($(fc1.right corner) + (0.1,0)$);
+	\foreach \x in {0, 0.2, 0.4, 0.6, 0.8} {
+		\draw[thick] ($(fc1.left corner) + (-0.1,0) + (\x,0)$) -- ($(fc1.left corner) + (-0.1,0) + (\x + 0.15,-0.15)$);
+	}
+	
+	% Masse
+	\coordinate (mC) at ($(C.east) + (0,-3)$);
+	\node[mass](m) at (mC) {$m$};
+	\draw[ultra thick] (C.east) -- (m.north);
+	
+	% Seile
+	\draw[ultra thick] (a2) -- (b2);
+	\draw[ultra thick] (b1) -- (c1);
+	
+	% Externe Kraft
+	\coordinate (F1) at ($(a1) + (0,-2)$);
+	\draw[ultra thick] (a1) -- (F1);
+	\coordinate (F2) at ($(F1) + (0,-0.25)$);
+	\coordinate (F3) at ($(F2) + (0,-1)$);
+	\draw[->,very thick] (F2) -- node[at end, below]{$F$} (F3);
+	
+	% Gravitation Kraft
+	\coordinate (g1) at ($(b) + (0,6)$);
+	\coordinate (g2) at ($(g1) + (0,-1)$);
+	\draw[->,very thick] (g1) -- node[at end, below]{$g$} (g2);
+	
+	% Referenz Lage für Seilewinkeln (theta1 und theta2)
+	% theta1
+	\coordinate (t11) at ($0.5*(b) + (-1,-0.5)$);
+	\coordinate (t12) at ($(t11) + (0.75,0)$);
+	\draw[ultra thick] (t11) -- (t12);
+	\foreach \x in {0, 0.25, 0.5, 0.75} {
+		\draw[thick] ($(t11) + (\x,0)$) -- ($(t11) + (\x + 0.15,-0.15)$);
+	}
+	\coordinate (t13) at ($0.5*(t11) + 0.5*(t12)$);
+	\coordinate (t14) at ($0.5*(a2) + 0.5*(b2)$);
+	\draw[<->, thick, bend left = 45] (t13) to node[midway, left]{$\theta_1$}(t14);
+	
+	% theta2
+	\coordinate (t21) at ($(t12) + (4.9,0)$);
+	\coordinate (t22) at ($(t21) + (0.75,0)$);
+	\draw[ultra thick] (t21) -- (t22);
+	\foreach \x in {0, 0.25, 0.5, 0.75} {
+		\draw[thick] ($(t21) + (\x,0)$) -- ($(t21) + (\x + 0.15,-0.15)$);
+	}
+	\coordinate (t23) at ($0.5*(t21) + 0.5*(t22)$);
+	\coordinate (t24) at ($0.5*(b1) + 0.5*(c1)$);
+	\draw[<->, thick, bend right = 45] (t23) to node[midway, right]{$\theta_2$}(t24);
+	
+	
+	% Reibung Koeffiziente
+	\coordinate (mu1) at ($(a2) + (0.3,0.3)$);
+	\draw (a2) to[out=-20,in=-120] node[at end, right]{$\mu_H$}(mu1);
+	
+	\coordinate (mu2) at ($(b1) + (0.4,0.2)$);
+	\draw (b1) to[out=-20,in=-120] node[at end, right]{$\mu_H$}(mu2);
+	
+	\coordinate (mu3) at ($(c2) + (0.3,0.3)$);
+	\draw (c2) to[out=-20,in=-120] node[at end, right]{$\mu_H$}(mu3);
+	
+	% Labels der Rollen
+	\node[anchor = north] at (A.south) {$A$};
+	\node[anchor = south] at (B.north) {$B$};
+	\node[anchor = north] at (C.south) {$C$};
+	
+	
+\end{tikzpicture}
