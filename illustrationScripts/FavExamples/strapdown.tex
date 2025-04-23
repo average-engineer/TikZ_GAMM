@@ -1,0 +1,82 @@
+\tikzstyle{imu}     = [draw, rectangle, minimum height=6cm, minimum width=2.5cm]
+\tikzstyle{block}     = [draw, rectangle, minimum height=1.5cm, minimum width=1.6cm]
+\tikzstyle{blockM}     = [draw, rectangle, minimum height=0.5cm, minimum width=0.5cm]
+\tikzstyle{blockS}     = [draw, rectangle, minimum height=0.5mm, minimum width=0.5mm]
+\tikzstyle{operator}     = [circle, inner sep=0pt, minimum size=7mm, draw=black]
+\tikzstyle{branch}    = [circle, inner sep=0pt, minimum size=1mm, fill=black, draw=black]
+\tikzstyle{branchS}    = [circle, inner sep=0pt, minimum size=0.1mm, fill=black, draw=black]
+\tikzstyle{connector} = [->, thick]
+\tikzstyle{dummy}     = [inner sep=0pt, minimum size=0pt]
+\tikzstyle{inout}     = []
+
+\begin{tikzpicture}[auto, node distance=3cm, >=stealth']
+	\node[imu] (imu) {IMU};
+	\node[block, above of = imu, node distance = 1.5cm] (gyro) {Gyro};
+	\node[block, below of = imu, node distance = 1.5cm] (acc) {Acc};
+	
+	\node[blockS, right of = gyro] (int1) {$\int$};
+	
+	% Product block
+	\node[blockM, right of = acc] (product) {$$};
+	\node[blockS, right of = acc] (product1) {$$};
+	\coordinate (c1) at (product1.north west);
+	\coordinate (c2) at (product1.north east);
+	\coordinate (c3) at (product1.south west);
+	\coordinate (c4) at (product1.south east);
+	\draw (c1) -- (c4);
+	\draw (c2) -- (c3);
+%	\node[operator, right of = product,node distance = 2cm] (sum1) {$$};
+%	\node[operator, right of = sum1,node distance = 2cm] (sum2) {$$};
+%	\node[blockS, right of = sum2, node distance = 2cm] (int2) {$\int$};
+%	\node[blockS, right of = int2] (int3) {$\int$};
+%	
+%	\node[block, below of = int2, node distance = 2cm] (grav) {\begin{tabular}{c}
+%			Gravitation\\
+%			Correction
+%	\end{tabular}};
+%	
+%	\node[block, below of = grav, node distance = 2cm] (cor) {\begin{tabular}{c}
+%			Coriolis\\
+%			Correction
+%	\end{tabular}};
+%	
+%	\node[block, above of = int3] (trans) {\begin{tabular}{c}
+%			Transport Rate Corrections\\
+%			Earth Rotation Corrections
+%	\end{tabular}};
+%	
+%	%% Branches
+%	\node[branch, right of = cor, node distance = 2cm] (b1) {};
+%	\node[branch, right of = int2, node distance = 1.97cm] (b2) {};
+%	\node[branch, right of = int3, node distance = 1cm] (b3) {};
+%	\node[branchS, above of = int1, node distance = 2cm] (b4) {};
+%	\node[branchS, below of = b3, node distance = 2cm] (b5) {};
+%	
+%	%% Connections
+	\draw[connector](gyro) -- node{$\bm{\omega}^B_{IB}$} (int1);
+	\draw[connector](acc) -- node{$\bm{a}^B_{IB}$} (product);
+%	\draw[connector](trans) -- node{$\bm{\omega}^N_{EN},\bm{\omega}^N_{IE} $} (int1);
+%	\draw[connector](product) --(sum1);
+%	\draw[connector](sum1) -- (sum2);
+%	\draw[connector](grav) -| (sum2);
+%	\draw[connector](cor) -| (sum1);
+%	\draw[connector](b1) -- (cor);
+%	\draw[connector](b1) -- (trans.-144);
+%	\node[dummy, right of = b1, node distance = 4cm] (velOut) {Velocity ($\bm{v}^N_{EB}$)};
+%	\draw[connector] (b1) -- (velOut);
+%	
+%	\draw[connector](sum2) -- node{$\bm{a}^N_{EB}$}(int2);
+%	\draw[thick](int2) -- node{$\bm{v}^N_{EB}$}(b2);
+%	\draw[connector](b2) -- (int3);
+%	\draw[thick](int3) -- (b3);
+%	\draw[connector](b3) -- (trans.-38.5);
+%	\node[dummy, right of = b3, node distance = 2cm] (posOut) {Position ($\bm{r}^N_{EB}$)};
+%	\draw[connector] (b3) -- (posOut);
+%	\draw[connector] (int1) -- node{$\mathbf{q}^N_B$ or $\bm{C}^N_B$}(product);
+%	\node[dummy, right of = b4, node distance = 8cm] (attOut) {Attitude ($\bm{\Theta}$ or $\bm{\sigma}$)};
+%	\draw[thick](int1) -- (b4);
+%	\draw[connector] (b4) -- (attOut);
+%	
+%	\draw[thick](b3) -- (b5);
+%	\draw[connector] (b5) -- (grav);
+\end{tikzpicture}
